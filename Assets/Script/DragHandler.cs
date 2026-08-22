@@ -6,24 +6,23 @@ using UnityEngine.UI;
 public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Image image;
-    [SerializeField] private GameObject playerBase;
     private BaseControl baseControl;
     private TurretManager turretManager;
     private TurretDragController turretDragController;
     private bool isDragging = false;
-   // private bool isDragged = false;
-
+    // private bool isDragged = false;
     private void Start()
     {
         turretManager = GetComponent<TurretManager>();
-        baseControl = playerBase.GetComponent<BaseControl>();
+        baseControl = FindObjectOfType<BaseControl>();
     }
 
     [HideInInspector] public Transform PositionAfterDrag;
     public void OnBeginDrag(PointerEventData eventData)
     {
-        turretDragController = transform.parent.GetComponent<TurretDragController>();
-        if (turretDragController.isTurretPlaced)
+        turretDragController = transform.parent.parent.GetComponent<TurretDragController>();
+        if (turretDragController == null) return;
+        if (turretDragController.isTurretPlaced && turretDragController != null)
         {
             isDragging = false;
             return;
